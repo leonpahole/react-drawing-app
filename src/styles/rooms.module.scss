@@ -1,0 +1,99 @@
+@import "variables";
+
+.roomList {
+  display: flex;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  flex-flow: row wrap;
+}
+
+.roomBase {
+  border: 1px solid $primary-color;
+  padding: 10px 20px 10px 20px;
+  border-radius: 0.5rem;
+  min-height: 200px;
+}
+
+.createNewRoomForm {
+  @extend .roomBase;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.createNewRoomWrapper {
+  margin-left: 50px;
+  margin-bottom: 30px;
+  width: 400px;
+}
+
+.roomWrapper {
+  @extend .createNewRoomForm;
+
+  margin-left: 50px;
+  margin-top: 20px;
+}
+
+.canvasWrapper {
+  width: 80%;
+  border: 1px solid $primary-color;
+  height: 80vh;
+}
+
+.roomInfoWrapper {
+  width: 20%;
+  margin-left: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: stretch;
+  height: 80vh;
+}
+
+.roomInfoDetailsWrapper {
+  height: 15vh;
+  overflow-y: auto;
+
+  p {
+    margin-bottom: 1px;
+  }
+}
+
+.singeRoomWrapper {
+  display: flex;
+}
+
+.entireRoomWrapper {
+  margin-right: 30px;
+  margin-left: 30px;
+}
+
+.canvasInnerWrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.canvas {
+  width: 100%;
+  height: 100%;
+}
+
+.controlPanelWrapper {
+  margin-bottom: 10px;
+}
+
+.drawingDashboardWrapper {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.drawingDashboardWord {
+  margin: unset;
+}
+
+.canvasClearButton {
+  width: 200px;
+  position: relative;
+  top: -55px;
+  left: 10px;
+}

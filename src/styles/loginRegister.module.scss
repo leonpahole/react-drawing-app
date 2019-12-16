@@ -1,0 +1,31 @@
+@import "variables";
+
+.formWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+}
+
+.form {
+  border: 1px solid $primary-color;
+  border-radius: 0.5rem;
+  padding: 20px 40px 20px 40px;
+
+  width: 500px;
+
+  .title {
+    text-align: center;
+    margin: unset;
+    margin-bottom: 20px;
+  }
+
+  .noticeWrap {
+    margin-top: 20px;
+    text-align: center;
+    a {
+      color: $primary-color;
+    }
+  }
+}
