@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import {
   BrowserRouter as Router,
   Switch,
@@ -13,8 +13,25 @@ import Room from "./pages/Room";
 import Header from "./layouts/Header";
 
 import axios from "axios";
+import Profile from "./pages/Profile";
 
-const App = () => {
+import { wrapComponent } from "react-snackbar-alert";
+
+const App = wrapComponent(({ createSnackbar }) => {
+  const displayError = message => {
+    createSnackbar({
+      message,
+      theme: "error"
+    });
+  };
+
+  const displaySuccess = message => {
+    createSnackbar({
+      message,
+      theme: "success"
+    });
+  };
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -59,45 +76,74 @@ const App = () => {
   }, [isLoggedIn, setUserLoggedIn, setIsLoading, logout]);
 
   const loggedOutRoutes = (
-    <React.Fragment>
+    <Switch>
       <Route path="/login">
-        <Login onLogin={login} />
+        <Login
+          displayError={displayError}
+          displaySuccess={displaySuccess}
+          onLogin={login}
+        />
       </Route>
       <Route path="/register">
-        <Register onRegister={login} />
+        <Register
+          displayError={displayError}
+          displaySuccess={displaySuccess}
+          onRegister={login}
+        />
       </Route>
-    </React.Fragment>
+      <Redirect exact from="/rooms" to="/login"></Redirect>
+      <Redirect exact from="/room" to="/login"></Redirect>
+      <Redirect exact from="/profile" to="/login"></Redirect>
+      <Redirect exact from="/" to="/login"></Redirect>
+    </Switch>
   );
 
   const loggedInRoutes = (
     <>
       <Header userLoggedIn={userLoggedIn} onLogout={logout}></Header>
-      <Route path="/rooms">
-        <Rooms userLoggedIn={userLoggedIn} />
-      </Route>
-      <Route path="/room/:id">
-        <Room userLoggedIn={userLoggedIn} />
-      </Route>
+      <Switch>
+        <Route path="/rooms">
+          <Rooms
+            displayError={displayError}
+            displaySuccess={displaySuccess}
+            userLoggedIn={userLoggedIn}
+          />
+        </Route>
+        <Route path="/room/:id">
+          <Room
+            displayError={displayError}
+            displaySuccess={displaySuccess}
+            userLoggedIn={userLoggedIn}
+          />
+        </Route>
+        <Route path="/profile/:id">
+          <Profile
+            displayError={displayError}
+            displaySuccess={displaySuccess}
+          ></Profile>
+        </Route>
+        <Redirect exact from="/login" to="/rooms"></Redirect>
+        <Redirect exact from="/register" to="/rooms"></Redirect>
+        <Redirect exact from="/" to="/rooms"></Redirect>
+      </Switch>
     </>
   );
 
   return (
     <Router>
       <div>
-        <Switch>
-          {!isLoading ? (
-            isLoggedIn && userLoggedIn ? (
-              loggedInRoutes
-            ) : (
-              loggedOutRoutes
-            )
+        {!isLoading ? (
+          isLoggedIn && userLoggedIn ? (
+            loggedInRoutes
           ) : (
-            <></>
-          )}
-        </Switch>
+            loggedOutRoutes
+          )
+        ) : (
+          <></>
+        )}
       </div>
     </Router>
   );
-};
+});
 
 export default App;

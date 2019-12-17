@@ -4,14 +4,21 @@ import Room from "./Room";
 import roomStyles from "../styles/rooms.module.scss";
 
 const RoomList = props => {
-  const { rooms, onJoin } = props;
+  const { rooms, onJoin, onDelete, loggedInUserID } = props;
 
   return (
     <div className={roomStyles.roomList}>
       {rooms && rooms.length > 0 ? (
         <>
           {rooms.map(room => (
-            <Room onJoin={onJoin} key={room.id} room={room}></Room>
+            <Room
+              deletable={loggedInUserID === room.author.id}
+              onDelete={onDelete}
+              authorID={room.author.id}
+              onJoin={onJoin}
+              key={room.id}
+              room={room}
+            ></Room>
           ))}
         </>
       ) : (

@@ -4,7 +4,7 @@ import LoginRegisterForm from "../components/LoginRegisterForm";
 import loginRegisterStyles from "../styles/loginRegister.module.scss";
 import axios from "axios";
 
-const useRegister = onRegister => {
+const useRegister = (onRegister, displayError) => {
   const [performRegisterError, setPerformRegisterError] = useState(null);
   const [isRegistering, setIsRegistering] = useState(false);
 
@@ -12,7 +12,7 @@ const useRegister = onRegister => {
     async ({ username, password }) => {
       setIsRegistering(true);
       try {
-        const registerResponse = await axios.post(`users/response`, {
+        const registerResponse = await axios.post(`users/register`, {
           username,
           password
         });
@@ -22,17 +22,14 @@ const useRegister = onRegister => {
           registerResponse.data.error === true ||
           registerResponse.data.token == null
         ) {
-          setPerformRegisterError("Login failed. Check entered data.");
+          displayError("Register failed: " + registerResponse.data.message);
           setIsRegistering(false);
         } else {
-          setPerformRegisterError(null);
           localStorage.setItem("authToken", registerResponse.data.token);
           onRegister && onRegister(true);
         }
       } catch (e) {
-        setPerformRegisterError(
-          "A network error has occured. Please try again later."
-        );
+        displayError("A network error has occured. Please try again later.");
         setIsRegistering(false);
       }
     },
@@ -43,9 +40,10 @@ const useRegister = onRegister => {
 };
 
 const Register = props => {
-  const { onRegister } = props;
+  const { onRegister, displayError } = props;
   const [performRegister, performRegisterError, isRegistering] = useRegister(
-    onRegister
+    onRegister,
+    displayError
   );
   return (
     <div className={loginRegisterStyles.formWrapper}>

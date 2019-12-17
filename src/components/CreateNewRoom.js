@@ -20,7 +20,7 @@ const CreateNewRoom = props => {
         ></InputGroup>
       </div>
       <ButtonWithSpinner
-        text="Create a room"
+        text="Create and join a room"
         loadingText="Loading..."
         isLoading={false}
         isDisabled={roomName.length === 0}

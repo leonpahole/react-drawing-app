@@ -4,7 +4,7 @@ import LoginRegisterForm from "../components/LoginRegisterForm";
 import loginRegisterStyles from "../styles/loginRegister.module.scss";
 import axios from "axios";
 
-const useLogin = onLogin => {
+const useLogin = (onLogin, displayError) => {
   const [performLoginError, setPerformLoginError] = useState(null);
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
@@ -22,19 +22,14 @@ const useLogin = onLogin => {
           loginResponse.data.error === true ||
           loginResponse.data.token == null
         ) {
-          setPerformLoginError(
-            "Login failed. Check your username and password."
-          );
+          displayError("Username or password incorrect.");
           setIsLoggingIn(false);
         } else {
-          setPerformLoginError(null);
           localStorage.setItem("authToken", loginResponse.data.token);
           onLogin && onLogin(true);
         }
       } catch (e) {
-        setPerformLoginError(
-          "A network error has occured. Please try again later."
-        );
+        displayError("A network error has occured. Please try again later.");
         setIsLoggingIn(false);
       }
     },
@@ -45,8 +40,11 @@ const useLogin = onLogin => {
 };
 
 const Login = props => {
-  const { onLogin } = props;
-  const [performLogin, performLoginError, isLoggingIn] = useLogin(onLogin);
+  const { onLogin, displayError } = props;
+  const [performLogin, performLoginError, isLoggingIn] = useLogin(
+    onLogin,
+    displayError
+  );
 
   return (
     <div className={loginRegisterStyles.formWrapper}>

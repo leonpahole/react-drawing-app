@@ -6,31 +6,49 @@ import sharedStyles from "../styles/shared.module.scss";
 import ButtonWithSpinner from "./ButtonWithSpinner";
 import InputGroup from "./InputGroup";
 
-const useLoginRegister = onSubmitForm => {
+const useLoginRegister = (onSubmitForm, isRegister) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const [emptyInputsError, setEmptyInputsError] = useState(false);
+  const [shortInputsError, setShortInputsError] = useState(false);
 
   const onSubmit = useCallback(() => {
-    let inputMissingError = false;
+    let inputError = false;
 
     if (username.length === 0 || password.length === 0) {
-      inputMissingError = true;
+      inputError = true;
 
       if (emptyInputsError === false) {
         setEmptyInputsError(true);
+        setShortInputsError(false);
       }
-    } else if (emptyInputsError === true) {
-      setEmptyInputsError(false);
+    } else if (isRegister && (username.length < 4 || password.length < 4)) {
+      inputError = true;
+
+      if (shortInputsError === false) {
+        setEmptyInputsError(false);
+        setShortInputsError(true);
+      }
     }
 
-    if (inputMissingError === false) {
+    if (inputError === false) {
+      setEmptyInputsError(false);
+      setShortInputsError(false);
+    }
+
+    if (inputError === false) {
       onSubmitForm && onSubmitForm({ username, password });
     }
   }, [onSubmitForm, username, password, emptyInputsError]);
 
-  return [setUsername, setPassword, onSubmit, emptyInputsError];
+  return [
+    setUsername,
+    setPassword,
+    onSubmit,
+    emptyInputsError,
+    shortInputsError
+  ];
 };
 
 const LoginRegisterForm = props => {
@@ -40,8 +58,9 @@ const LoginRegisterForm = props => {
     setUsername,
     setPassword,
     onSubmit,
-    emptyInputsError
-  ] = useLoginRegister(onSubmitForm);
+    emptyInputsError,
+    shortInputsError
+  ] = useLoginRegister(onSubmitForm, isRegister);
 
   return (
     <div className={loginRegisterStyles.form}>
@@ -71,7 +90,11 @@ const LoginRegisterForm = props => {
       ></ButtonWithSpinner>
 
       <div className={sharedStyles.errorWrapper}>
-        {emptyInputsError ? "Enter all requried fields" : errorMessage}
+        {emptyInputsError
+          ? "Enter all requried fields"
+          : shortInputsError
+          ? "Username and password must be at least 4 characters"
+          : errorMessage}
       </div>
 
       <div className={loginRegisterStyles.noticeWrap}>

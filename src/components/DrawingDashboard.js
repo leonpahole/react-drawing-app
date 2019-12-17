@@ -18,7 +18,7 @@ const DrawingDashboard = props => {
   let statusElement = null;
 
   switch (roundStatus) {
-    case "STARTED":
+    case "ROUND_IN_PROGRESS":
       statusElement = isDrawing ? (
         <span>
           You are drawing: <b>{word}</b>
@@ -30,11 +30,11 @@ const DrawingDashboard = props => {
       );
       break;
 
-    case "WAITING":
+    case "NOT_STARTED":
       statusElement = <span>Waiting for game to start.</span>;
       break;
 
-    case "NEXT_ROUND":
+    case "WAITING_ROUND":
       statusElement = <span>Waiting for next round.</span>;
       break;
 

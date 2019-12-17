@@ -53,8 +53,6 @@
 }
 
 .headerWrapper {
-  margin-right: 30px;
-  margin-left: 30px;
   display: flex;
   justify-content: space-between;
   margin-bottom: 25px;
@@ -63,7 +61,7 @@
 
 .userInfoWrapper {
   display: flex;
-  justify-content: flex-end;
+  justify-content: flex-start;
   align-items: flex-end;
   flex-direction: column;
 
@@ -75,4 +73,19 @@
   p.logout {
     cursor: pointer;
   }
+}
+
+.winWrapper {
+  opacity: 0;
+  border: 1px solid black;
+  background-color: white;
+  position: fixed;
+  top: 90px;
+  right: 60px;
+  height: 100px;
+  width: 200px;
+  border-radius: 0.5rem;
+  display: none;
+  justify-content: center;
+  align-items: center;
 }

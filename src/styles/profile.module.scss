@@ -1,0 +1,21 @@
+.infoWrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.basicInfoWrapper {
+  margin-left: 20px;
+}
+
+.avatar {
+  border-radius: 50%;
+}
+
+.detailsWrapper {
+  p {
+    margin: unset;
+    margin-bottom: 5px;
+  }
+}
